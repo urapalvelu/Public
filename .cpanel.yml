@@ -4,4 +4,7 @@ deployment:
     - export DEPLOYPATH=/home/dbryqtwn/public_html/
     - /bin/rm -f $DEPLOYPATH/index.php
     - /bin/rm -f $DEPLOYPATH/index.html
+    - /bin/rm -f $DEPLOYPATH/index.htm
+    - /bin/rm -f $DEPLOYPATH/default.html
+    - /bin/rm -f $DEPLOYPATH/coming-soon.html
     - /bin/cp index.html $DEPLOYPATH
