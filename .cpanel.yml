@@ -2,4 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/dbryqtwn/public_html/
+    - /bin/rm -f $DEPLOYPATH/index.php
+    - /bin/rm -f $DEPLOYPATH/index.html
     - /bin/cp index.html $DEPLOYPATH
