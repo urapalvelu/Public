@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urapalvelu — Löydä seuraava tekijäsi</title>
+  <meta name="description" content="Urapalvelu on Suomen kattavin työpaikkasivusto. Julkaise ilmoitus ja tavoita tuhansia työnhakijoita ympäri Suomea." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest: #0D2B1F;
+      --forest-mid: #1a3a2a;
+      --forest-light: #2a5a3a;
+      --sage: #EAF0EC;
+      --gold: #C9A84C;
+      --gold-dark: #b8922e;
+      --gold-light: #F6EDD5;
+      --cream: #FAF7F2;
+      --white: #FFFFFF;
+      --muted: #6a8a78;
+      --border: #dce8e0;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--forest);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-gold {
+      background: var(--gold); color: var(--forest); border: none;
+      padding: 15px 32px; border-radius: 6px; font-weight: 700;
+      font-size: 15px; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: inline-block; text-align: center;
+    }
+    .btn-gold:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(201,168,76,0.38);
+    }
+    .btn-forest {
+      background: var(--forest); color: white; border: none;
+      padding: 15px 32px; border-radius: 6px; font-weight: 600;
+      font-size: 15px; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: inline-block; text-align: center;
+    }
+    .btn-forest:hover {
+      background: var(--forest-mid);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .btn-ghost {
+      background: transparent; color: var(--forest);
+      border: 1.5px solid var(--border);
+      padding: 13px 24px; border-radius: 6px; font-weight: 600;
+      font-size: 14px; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--forest); background: var(--sage); }
+
+    /* ── NAV ── */
+    nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 700; color: var(--forest);
+      letter-spacing: -0.5px;
+    }
+    .nav-logo-text span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-link {
+      color: #4a6a58; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: color 0.15s; border: none;
+      background: none; font-family: 'Outfit', sans-serif;
+    }
+    .nav-link:hover { color: var(--forest); }
+    .nav-divider { width: 1px; height: 22px; background: var(--border); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: inline-block;
+      background: var(--gold-light);
+      color: #9a6a1a;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      background: var(--forest);
+      padding: 90px 40px 100px;
+      position: relative;
+      overflow: hidden;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg-radial {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 15% 60%, rgba(201,168,76,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(201,168,76,0.06) 0%, transparent 45%);
+    }
+    .hero-ring {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      border: 1px solid rgba(201,168,76,0.08);
+    }
+    .hero-grid {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 20px; padding: 6px 16px; margin-bottom: 32px;
+    }
+    .hero-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold); box-shadow: 0 0 6px var(--gold);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+    .hero-badge span { color: var(--gold); font-size: 12px; font-weight: 600; }
+    h1.hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      color: white;
+      font-size: clamp(42px, 5.5vw, 70px);
+      line-height: 1.06;
+      margin-bottom: 26px;
+      letter-spacing: -1.5px;
+    }
+    h1.hero-title em { color: var(--gold); font-style: italic; }
+    .hero-sub {
+      color: #7a9a88; font-size: 17px; line-height: 1.8;
+      margin-bottom: 42px; max-width: 410px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-ghost-hero {
+      background: transparent; color: #7a9a88;
+      border: 1.5px solid #2a4a3a;
+      padding: 16px 28px; border-radius: 6px; font-weight: 600;
+      font-size: 15px; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-ghost-hero:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      display: flex; gap: 36px; margin-top: 52px; padding-top: 36px;
+      border-top: 1px solid #1a3a2a;
+    }
+    .hero-stat-val {
+      color: white; font-weight: 700; font-size: 22px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .hero-stat-lbl { color: #4a6a58; font-size: 12px; margin-top: 3px; }
+
+    /* ── FLOATING CARD ── */
+    .hero-card-wrap { position: relative; }
+    .hero-card {
+      background: white; border-radius: 18px; padding: 30px;
+      box-shadow: 0 48px 120px rgba(0,0,0,0.45);
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+    .card-dots { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+    .card-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .card-dot-red { background: #ef4444; }
+    .card-dot-yellow { background: #f59e0b; }
+    .card-dot-green { background: #22c55e; }
+    .card-label {
+      margin-left: auto; font-size: 11px; color: #bbb; font-weight: 500;
+    }
+    .card-field {
+      background: var(--sage); border-radius: 10px;
+      padding: 16px 18px; margin-bottom: 14px;
+    }
+    .card-field-label {
+      font-size: 10px; color: #999; margin-bottom: 5px;
+      font-weight: 600; letter-spacing: 0.5px;
+    }
+    .card-field-value { font-weight: 700; font-size: 18px; color: var(--forest); }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .card-grid-item {
+      background: var(--sage); border-radius: 8px; padding: 10px 12px;
+    }
+    .card-grid-label { font-size: 10px; color: #999; margin-bottom: 3px; font-weight: 600; }
+    .card-grid-value { font-weight: 600; font-size: 13px; color: var(--forest); }
+    .card-desc {
+      background: var(--sage); border-radius: 8px;
+      padding: 12px 14px; margin-bottom: 18px;
+    }
+    .card-desc-label { font-size: 10px; color: #999; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px; }
+    .card-desc-text { font-size: 12px; color: #4a6a58; line-height: 1.7; }
+    .card-note { text-align: center; font-size: 11px; color: #bbb; margin-top: 10px; }
+
+    .hero-badge-float {
+      position: absolute; top: -18px; left: -32px;
+      background: var(--gold); border-radius: 14px;
+      padding: 14px 20px;
+      box-shadow: 0 12px 36px rgba(201,168,76,0.42);
+    }
+    .hbf-sub { font-size: 10px; font-weight: 700; color: rgba(13,43,31,0.65); letter-spacing: 0.5px; margin-bottom: 2px; }
+    .hbf-main { font-size: 24px; font-weight: 700; color: var(--forest); font-family: 'Cormorant Garamond', serif; }
+    .hbf-note { font-size: 10px; color: #7a5a10; }
+
+    /* ── STATS SECTION ── */
+    #stats {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 56px 40px;
+    }
+    .stats-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 20px;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px; font-weight: 700;
+      color: var(--forest); line-height: 1;
+      display: block;
+    }
+    .stat-lbl { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight: 500; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 100px 40px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-center { text-align: center; margin-bottom: 64px; }
+    h2.section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 54px);
+      color: var(--forest);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    h2.section-title-white { color: white; }
+    .section-sub { color: var(--muted); font-size: 17px; max-width: 520px; margin: 0 auto; line-height: 1.75; }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    }
+    .feature-card {
+      background: white; border-radius: 14px; padding: 32px 28px;
+      border: 1.5px solid var(--border); transition: all 0.22s;
+    }
+    .feature-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: var(--gold-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .feature-title { font-weight: 700; font-size: 17px; margin-bottom: 10px; color: var(--forest); }
+    .feature-desc { color: var(--muted); font-size: 14px; line-height: 1.75; }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--sage); padding: 90px 40px; }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 48px; position: relative; max-width: 1100px; margin: 0 auto;
+    }
+    .steps-line {
+      position: absolute; top: 30px; left: 20%; right: 20%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.35;
+    }
+    .step-item { text-align: center; position: relative; }
+    .step-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 24px;
+      box-shadow: 0 8px 24px rgba(13,43,31,0.2);
+    }
+    .step-num { color: var(--gold); font-weight: 700; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 10px; }
+    .step-title { font-weight: 700; font-size: 18px; margin-bottom: 10px; color: var(--forest); }
+    .step-desc { color: var(--muted); font-size: 14px; line-height: 1.75; max-width: 240px; margin: 0 auto; }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .plan-card {
+      border-radius: 14px; padding: 36px 30px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .plan-card:hover { transform: translateY(-5px); }
+    .plan-card-light { background: white; border: 1.5px solid var(--border); }
+    .plan-card-dark {
+      background: var(--forest);
+      box-shadow: 0 24px 60px rgba(13,43,31,0.22);
+    }
+    .plan-badge {
+      position: absolute; top: 22px; right: 22px;
+      background: var(--gold); color: var(--forest);
+      font-size: 11px; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .plan-name { font-weight: 700; font-size: 18px; margin-bottom: 4px; }
+    .plan-name-light { color: var(--forest); }
+    .plan-name-dark { color: white; }
+    .plan-sub { font-size: 12px; margin-bottom: 24px; }
+    .plan-sub-light { color: var(--muted); }
+    .plan-sub-dark { color: #5a8a6a; }
+    .plan-price { margin-bottom: 28px; }
+    .plan-price-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 58px; font-weight: 700;
+    }
+    .plan-price-num-light { color: var(--forest); }
+    .plan-price-num-dark { color: var(--gold); }
+    .plan-price-unit { font-size: 15px; margin-left: 4px; }
+    .plan-price-unit-light { color: var(--muted); }
+    .plan-price-unit-dark { color: #5a8a6a; }
+    .plan-features { margin-bottom: 32px; }
+    .plan-feature { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+    .plan-check {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+      background: var(--gold-light); color: var(--gold);
+    }
+    .plan-check-dark { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .plan-feature-text-light { font-size: 14px; color: #3a5a48; }
+    .plan-feature-text-dark { font-size: 14px; color: #cde0d4; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--forest); padding: 90px 40px; }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 22px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .testi-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 32px 28px;
+    }
+    .testi-stars { color: var(--gold); letter-spacing: 2px; font-size: 15px; }
+    .testi-text {
+      color: #b0caba; font-size: 14px; line-height: 1.85;
+      margin: 18px 0 26px; font-style: italic;
+    }
+    .testi-author { display: flex; gap: 14px; align-items: center; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: var(--forest); flex-shrink: 0;
+    }
+    .testi-name { color: white; font-weight: 600; font-size: 14px; }
+    .testi-role { color: #4a6a58; font-size: 12px; margin-top: 2px; }
+
+    /* ── JOB LISTINGS ── */
+    .job-row {
+      background: white; border-radius: 10px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      border: 1.5px solid var(--border); transition: all 0.18s; cursor: pointer;
+    }
+    .job-row:hover {
+      border-color: var(--gold);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+    .job-logo {
+      width: 50px; height: 50px; border-radius: 12px;
+      background: var(--sage); display: flex; align-items: center;
+      justify-content: center; font-size: 24px; flex-shrink: 0;
+    }
+    .job-title { font-weight: 600; font-size: 15px; color: var(--forest); margin-bottom: 4px; }
+    .job-meta { font-size: 13px; color: var(--muted); }
+    .badge-hot {
+      background: #FEF0D0; color: #B8620A;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+    }
+
+    /* ── FAQ ── */
+    #faq { background: var(--sage); padding: 90px 40px; }
+    .faq-inner { max-width: 740px; margin: 0 auto; }
+    .faq-box { background: white; border-radius: 16px; padding: 4px 36px; }
+    .faq-item {
+      border-bottom: 1px solid var(--border); padding: 22px 0; cursor: pointer;
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 16px;
+    }
+    .faq-q-text { font-weight: 600; font-size: 15px; color: var(--forest); }
+    .faq-icon {
+      font-size: 22px; color: var(--gold); flex-shrink: 0;
+      transition: transform 0.22s; display: inline-block;
+      line-height: 1; font-style: normal;
+    }
+    .faq-a {
+      margin-top: 14px; color: #4a6a58; font-size: 14px; line-height: 1.85;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ── FINAL CTA ── */
+    #cta { background: var(--gold); padding: 96px 40px; text-align: center; }
+    h2.cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 62px);
+      color: var(--forest); margin-bottom: 18px; line-height: 1.1;
+    }
+    .cta-sub { color: #6a4a10; font-size: 17px; margin-bottom: 40px; line-height: 1.75; }
+    .cta-note { color: #8a6a20; font-size: 13px; margin-top: 18px; }
+
+    /* ── FOOTER ── */
+    footer { background: #070e09; padding: 60px 40px 28px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 52px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .footer-brand-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--forest-mid);
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .footer-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      color: white; font-size: 22px; font-weight: 700;
+    }
+    .footer-brand-name span { color: var(--gold); }
+    .footer-desc { color: #2a4a38; font-size: 13px; line-height: 1.85; max-width: 230px; }
+    .footer-col-title {
+      color: #2a4a38; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; margin-bottom: 18px;
+    }
+    .footer-link {
+      color: #1a3a28; font-size: 13px; margin-bottom: 12px;
+      cursor: pointer; transition: color 0.15s; display: block;
+    }
+    .footer-link:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid #0f1f14; padding-top: 22px;
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .footer-copy { color: #1a3a28; font-size: 12px; }
+
+    /* ── FORMS ── */
+    .form-section { max-width: 880px; margin: 0 auto; padding: 56px 40px; }
+    .form-back {
+      background: none; border: none; color: var(--muted);
+      cursor: pointer; font: 500 14px 'Outfit',sans-serif;
+      margin-bottom: 36px; display: flex; align-items: center;
+      gap: 6px; padding: 0;
+    }
+    .form-back:hover { color: var(--forest); }
+    .form-header { text-align: center; margin-bottom: 52px; }
+    h1.form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px; color: var(--forest); margin-bottom: 12px;
+    }
+    .form-subtitle { color: var(--muted); font-size: 16px; }
+    .form-step-title { font-weight: 700; font-size: 17px; margin-bottom: 18px; color: var(--forest); }
+    .plan-picker { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 44px; }
+    .plan-pick-card {
+      border-radius: 12px; padding: 22px 20px;
+      cursor: pointer; transition: all 0.18s;
+      background: white;
+    }
+    .plan-pick-card.selected {
+      border-color: var(--gold) !important;
+      background: var(--gold-light);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.2);
+    }
+    .plan-pick-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .plan-pick-name { font-weight: 700; font-size: 16px; color: var(--forest); }
+    .plan-pick-badge {
+      background: var(--gold); color: var(--forest);
+      font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px;
+    }
+    .plan-pick-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px; font-weight: 700; color: var(--forest); margin-bottom: 12px;
+    }
+    .plan-pick-feature { font-size: 12px; color: #4a6a58; margin-bottom: 6px; display: flex; gap: 6px; align-items: center; }
+    .plan-pick-check { color: var(--gold); font-weight: 700; }
+    .form-card { background: white; border-radius: 16px; padding: 40px; border: 1.5px solid var(--border); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+    .form-group { margin-bottom: 0; }
+    .form-label { font-size: 13px; font-weight: 600; color: var(--forest); display: block; margin-bottom: 7px; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: 'Outfit', sans-serif;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+      background: white; color: var(--forest);
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .form-textarea { resize: vertical; }
+    .form-summary {
+      background: var(--sage); border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 22px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .form-summary-title { font-weight: 700; font-size: 15px; color: var(--forest); }
+    .form-summary-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .form-summary-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px; font-weight: 700; color: var(--forest);
+    }
+    .form-secure { text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+    /* ── JOBS PAGE ── */
+    .jobs-section { max-width: 1060px; margin: 0 auto; padding: 52px 40px; }
+    .jobs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+    h1.jobs-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; color: var(--forest); margin-bottom: 4px; }
+    .jobs-count { color: var(--muted); font-size: 15px; }
+    .cat-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+    .cat-pill {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 30px; padding: 8px 16px;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      display: flex; gap: 7px; align-items: center;
+      transition: all 0.15s; font-family: 'Outfit', sans-serif;
+    }
+    .cat-pill:hover, .cat-pill.active {
+      border-color: var(--gold); background: var(--gold-light);
+    }
+    .cat-pill-count { color: #bbb; font-size: 11px; }
+    .search-bar {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 8px; display: flex; gap: 8px;
+      margin-bottom: 26px;
+    }
+    .search-field {
+      flex: 2; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; background: var(--sage); border-radius: 7px;
+    }
+    .search-field-loc { flex: 1; }
+    .search-field span { color: var(--muted); }
+    .search-input-bare {
+      border: none; outline: none; background: transparent;
+      font-size: 14px; font-family: 'Outfit', sans-serif;
+      width: 100%; color: var(--forest);
+    }
+    .search-input-bare::placeholder { color: #a0b8a8; }
+    .jobs-list { display: flex; flex-direction: column; gap: 10px; }
+
+    /* ── VIEWS ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .d1{animation-delay:0.1s;} .d2{animation-delay:0.2s;} .d3{animation-delay:0.3s;} .d4{animation-delay:0.45s;}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 900px){
+      .hero-grid, .features-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+      .hero-card-wrap { display: none; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .steps-line { display: none; }
+      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .plan-picker { grid-template-columns: 1fr; }
+      nav { padding: 0 20px; }
+      .nav-links .btn-ghost { display: none; }
+      #hero { padding: 60px 20px 70px; }
+      .section { padding: 60px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" onclick="showView('home')">
+        <div class="nav-logo-icon">🎯</div>
+        <span class="nav-logo-text">Ura<span>palvelu</span></span>
+      </a>
+      <div class="nav-links">
+        <button class="nav-link" onclick="showView('jobs')">Selaa töitä</button>
+        <button class="nav-link" onclick="showView('post')">Työnantajille</button>
+        <button class="nav-link" onclick="scrollTo('pricing-section')">Hinnoittelu</button>
+        <div class="nav-divider"></div>
+        <button class="btn-ghost" style="padding:9px 18px;font-size:13px;">Kirjaudu</button>
+        <button class="btn-gold" style="padding:10px 22px;font-size:13px;" onclick="showView('post')">+ Julkaise ilmoitus</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════ HOME VIEW -->
+  <div id="view-home" class="view active">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-bg-radial"></div>
+      <div class="hero-ring" style="right:-80px;top:40px;width:700px;height:700px;"></div>
+      <div class="hero-ring" style="right:40px;top:120px;width:500px;height:500px;"></div>
+
+      <div class="hero-grid">
+        <!-- Left -->
+        <div>
+          <div class="hero-badge fade-up">
+            <div class="hero-dot"></div>
+            <span>1 284 avointa paikkaa tällä hetkellä</span>
+          </div>
+          <h1 class="hero-title fade-up d1">
+            Löydä oikea<br>tekijä —<br><em>nopeasti.</em>
+          </h1>
+          <p class="hero-sub fade-up d2">
+            Urapalvelu yhdistää Suomen parhaat työnantajat ja osaajat.
+            Julkaise ilmoitus tänään, saa hakemuksia huomenna.
+          </p>
+          <div class="hero-btns fade-up d3">
+            <button class="btn-gold" style="font-size:16px;padding:17px 38px;" onclick="showView('post')">Julkaise ilmoitus →</button>
+            <button class="btn-ghost-hero" onclick="showView('jobs')">Selaa töitä</button>
+          </div>
+          <div class="hero-stats fade-up d4">
+            <div>
+              <div class="hero-stat-val">640+</div>
+              <div class="hero-stat-lbl">Rekrytoivaa yritystä</div>
+            </div>
+            <div>
+              <div class="hero-stat-val">34</div>
+              <div class="hero-stat-lbl">Hakemusta / ilmoitus</div>
+            </div>
+            <div>
+              <div class="hero-stat-val">Ilmainen</div>
+              <div class="hero-stat-lbl">Työnhakijalle</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right — card mockup -->
+        <div class="hero-card-wrap fade-up d2">
+          <div class="hero-badge-float">
+            <div class="hbf-sub">KESKIMÄÄRIN</div>
+            <div class="hbf-main">34 hakemusta</div>
+            <div class="hbf-note">per ilmoitus / 30 päivää</div>
+          </div>
+          <div class="hero-card">
+            <div class="card-dots">
+              <div class="card-dot card-dot-red"></div>
+              <div class="card-dot card-dot-yellow"></div>
+              <div class="card-dot card-dot-green"></div>
+              <span class="card-label">Uusi ilmoitus · Urapalvelu</span>
+            </div>
+            <div class="card-field">
+              <div class="card-field-label">TEHTÄVÄNIMIKE</div>
+              <div class="card-field-value">Senior Putkiasentaja</div>
+            </div>
+            <div class="card-grid">
+              <div class="card-grid-item"><div class="card-grid-label">📍 SIJAINTI</div><div class="card-grid-value">Tampere</div></div>
+              <div class="card-grid-item"><div class="card-grid-label">💼 TYYPPI</div><div class="card-grid-value">Kokoaikainen</div></div>
+              <div class="card-grid-item"><div class="card-grid-label">💰 PALKKA</div><div class="card-grid-value">3 800–4 600 €/kk</div></div>
+              <div class="card-grid-item"><div class="card-grid-label">🏢 ALA</div><div class="card-grid-value">LVI & Putki</div></div>
+            </div>
+            <div class="card-desc">
+              <div class="card-desc-label">KUVAUS</div>
+              <div class="card-desc-text">Etsimme kokenutta putkiasentajaa kasvavaan tiimiimme. Tarjoamme kilpailukykyisen palkan ja hyvät edut...</div>
+            </div>
+            <button class="btn-gold" style="width:100%;padding:14px;font-size:14px;" onclick="showView('post')">✓ Julkaise ilmoitus — 99 €</button>
+            <p class="card-note">🔒 Turvallinen maksu · Näkyy heti</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-num" data-target="1284">0</span>
+          <div class="stat-lbl">Avointa työpaikkaa</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="640" data-suffix="+">0</span>
+          <div class="stat-lbl">Rekrytoivaa yritystä</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="34">0</span>
+          <div class="stat-lbl">Hakemusta / ilmoitus</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="98" data-suffix="%">0</span>
+          <div class="stat-lbl">Tyytyväisiä työnantajia</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY URAPALVELU -->
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-center">
+          <span class="section-label">TYÖNANTAJILLE</span>
+          <h2 class="section-title">Miksi valita Urapalvelu?</h2>
+          <p class="section-sub">Löydät oikean tekijän nopeammin — olivat he sitten IT-osaajia, rakennusmiehiä tai sairaanhoitajia.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">Nopea julkaisu</div>
+            <p class="feature-desc">Ilmoituksesi on näkyvissä minuuteissa. Ei viikkoja odottelua, ei byrokratiaa.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-title">Oikea kohderyhmä</div>
+            <p class="feature-desc">Hakijamme ovat aidosti työnhaussa — ei satunnaisia klikkejä.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Selkeät tilastot</div>
+            <p class="feature-desc">Näet reaaliajassa kuinka moni on nähnyt ja hakenut ilmoitustasi.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <div class="feature-title">Kaikki alat</div>
+            <p class="feature-desc">IT:stä rakentamiseen, terveydenhuollosta opetukseen — kaikki yhdessä paikassa.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <div class="feature-title">Helppo viestintä</div>
+            <p class="feature-desc">Hakijat tavoittavat sinut suoraan — ei turhia välikäsiä.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <div class="feature-title">Selkeä hinnoittelu</div>
+            <p class="feature-desc">Tiedät tarkalleen mitä maksat. Ei piilokuluja, ei yllätyksiä.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-center">
+          <span class="section-label">3 VAIHETTA</span>
+          <h2 class="section-title">Julkaise ilmoitus helposti</h2>
+        </div>
+        <div class="steps-grid">
+          <div class="steps-line"></div>
+          <div class="step-item">
+            <div class="step-icon">✍️</div>
+            <div class="step-num">VAIHE 01</div>
+            <div class="step-title">Täytä lomake</div>
+            <p class="step-desc">Kerro tehtävänimike, sijainti, palkka ja kuvaus. Alle 5 minuuttia.</p>
+          </div>
+          <div class="step-item">
+            <div class="step-icon">💳</div>
+            <div class="step-num">VAIHE 02</div>
+            <div class="step-title">Valitse paketti</div>
+            <p class="step-desc">Perus 49 €, Teho 99 € tai Yritys 249 €. Maksa turvallisesti verkossa.</p>
+          </div>
+          <div class="step-item">
+            <div class="step-icon">🚀</div>
+            <div class="step-num">VAIHE 03</div>
+            <div class="step-title">Saa hakemuksia</div>
+            <p class="step-desc">Ilmoitus näkyy heti. Hakemukset saapuvat suoraan sähköpostiisi.</p>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:56px;">
+          <button class="btn-forest" style="font-size:16px;padding:17px 44px;" onclick="showView('post')">Julkaise ensimmäinen ilmoituksesi →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing-section">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-center">
+          <span class="section-label">HINNOITTELU</span>
+          <h2 class="section-title">Selkeä hinnoittelu, ei yllätyksiä</h2>
+          <p class="section-sub">Kaikki paketit sisältävät 30 päivän näkyvyyden</p>
+        </div>
+        <div class="pricing-grid">
+          <!-- Perus -->
+          <div class="plan-card plan-card-light">
+            <div class="plan-name plan-name-light">Perus</div>
+            <div class="plan-sub plan-sub-light">Hyvä alku</div>
+            <div class="plan-price">
+              <span class="plan-price-num plan-price-num-light">49</span>
+              <span class="plan-price-unit plan-price-unit-light">€ / 30 pv</span>
+            </div>
+            <div class="plan-features">
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">1 ilmoitus</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Perushaku-näkyvyys</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Hakijasähköpostit</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Ilmoituksen muokkaus</span></div>
+            </div>
+            <button class="btn-forest" style="width:100%;padding:15px;font-size:15px;" onclick="selectPlanAndPost(0)">Valitse Perus</button>
+          </div>
+          <!-- Teho -->
+          <div class="plan-card plan-card-dark">
+            <div class="plan-badge">SUOSITUIN</div>
+            <div class="plan-name plan-name-dark">Teho</div>
+            <div class="plan-sub plan-sub-dark">Suosituin valinta</div>
+            <div class="plan-price">
+              <span class="plan-price-num plan-price-num-dark">99</span>
+              <span class="plan-price-unit plan-price-unit-dark">€ / 30 pv</span>
+            </div>
+            <div class="plan-features">
+              <div class="plan-feature"><div class="plan-check plan-check-dark">✓</div><span class="plan-feature-text-dark">1 ilmoitus</span></div>
+              <div class="plan-feature"><div class="plan-check plan-check-dark">✓</div><span class="plan-feature-text-dark">🔝 Nostettu näkyvyys</span></div>
+              <div class="plan-feature"><div class="plan-check plan-check-dark">✓</div><span class="plan-feature-text-dark">Korostettu listaus</span></div>
+              <div class="plan-feature"><div class="plan-check plan-check-dark">✓</div><span class="plan-feature-text-dark">Hakijatilastot</span></div>
+              <div class="plan-feature"><div class="plan-check plan-check-dark">✓</div><span class="plan-feature-text-dark">Ilmoituksen muokkaus</span></div>
+            </div>
+            <button class="btn-gold" style="width:100%;padding:15px;font-size:15px;" onclick="selectPlanAndPost(1)">Valitse Teho</button>
+          </div>
+          <!-- Yritys -->
+          <div class="plan-card plan-card-light">
+            <div class="plan-name plan-name-light">Yritys</div>
+            <div class="plan-sub plan-sub-light">Parhaat tulokset</div>
+            <div class="plan-price">
+              <span class="plan-price-num plan-price-num-light">249</span>
+              <span class="plan-price-unit plan-price-unit-light">€ / 30 pv</span>
+            </div>
+            <div class="plan-features">
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">5 ilmoitusta</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">🔝 Huippunäkyvyys</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Yritysprofiilisivu</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Hakijatilastot</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Prioriteettituki</span></div>
+              <div class="plan-feature"><div class="plan-check">✓</div><span class="plan-feature-text-light">Logo hakutuloksissa</span></div>
+            </div>
+            <button class="btn-forest" style="width:100%;padding:15px;font-size:15px;" onclick="selectPlanAndPost(2)">Ota yhteyttä</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-center">
+          <div style="display:inline-block;background:rgba(201,168,76,0.12);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:1.5px;padding:6px 14px;border-radius:20px;margin-bottom:20px;">ASIAKASKOKEMUKSET</div>
+          <h2 class="section-title section-title-white">Mitä työnantajat sanovat?</h2>
+        </div>
+        <div class="testi-grid">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Saimme yli 40 hakemusta viikon sisällä. Löysimme täydellisen kirvesmiehen nopeammin kuin koskaan ennen."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">ML</div>
+              <div>
+                <div class="testi-name">Mikaela Lindström</div>
+                <div class="testi-role">HR-päällikkö · Rakennusliike Mäkinen Oy</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Pienenä yrityksenä pystymme nyt kilpailemaan isojen kanssa rekrytoinnissa. Hinta-laatu-suhde on ylivoimainen."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">JK</div>
+              <div>
+                <div class="testi-name">Juhani Korhonen</div>
+                <div class="testi-role">Toimitusjohtaja · KorhoSähkö Oy</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Nostettu ilmoitus toi meille todella laadukkaita hakijoita. Suosittelen lämpimästi kaikille terveydenhuollon rekrytoijille."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SN</div>
+              <div>
+                <div class="testi-name">Sara Nieminen</div>
+                <div class="testi-role">Rekrytointivastaava · TerveysRinne Oy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOB LISTINGS PREVIEW -->
+    <section class="section">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;">
+          <div>
+            <span class="section-label">TYÖNHAKIJALLE</span>
+            <h2 class="section-title" style="margin-bottom:0;">Uusimmat ilmoitukset</h2>
+          </div>
+          <button class="btn-ghost" onclick="showView('jobs')">Näytä kaikki →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="job-row">
+            <div class="job-logo">💻</div>
+            <div style="flex:1;"><div class="job-title">Senior Full Stack -kehittäjä</div><div class="job-meta">Solita Oy · Helsinki</div></div>
+            <span class="badge-hot">🔥 Suosittu</span>
+          </div>
+          <div class="job-row">
+            <div class="job-logo">🏗️</div>
+            <div style="flex:1;"><div class="job-title">Rakennusmies / Kirvesmies</div><div class="job-meta">NCC Suomi Oy · Tampere</div></div>
+          </div>
+          <div class="job-row">
+            <div class="job-logo">🔧</div>
+            <div style="flex:1;"><div class="job-title">Putkiasentaja</div><div class="job-meta">Talotekniikka Pro · Espoo</div></div>
+          </div>
+          <div class="job-row">
+            <div class="job-logo">⚡</div>
+            <div style="flex:1;"><div class="job-title">Sähköasentaja</div><div class="job-meta">Caverion Suomi · Turku</div></div>
+            <span class="badge-hot">🔥 Suosittu</span>
+          </div>
+          <div class="job-row">
+            <div class="job-logo">🏥</div>
+            <div style="flex:1;"><div class="job-title">Terveydenhoitaja</div><div class="job-meta">HUS · Helsinki</div></div>
+          </div>
+          <div class="job-row">
+            <div class="job-logo">⚙️</div>
+            <div style="flex:1;"><div class="job-title">DevOps-insinööri</div><div class="job-meta">Vincit Oy · Etätyö</div></div>
+            <span class="badge-hot">🔥 Suosittu</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="faq-inner">
+        <div class="section-center">
+          <span class="section-label">UKK</span>
+          <h2 class="section-title">Usein kysytyt kysymykset</h2>
+        </div>
+        <div class="faq-box">
+          <div class="faq-item">
+            <div class="faq-q">
+              <span class="faq-q-text">Kuinka nopeasti ilmoitukseni näkyy sivustolla?</span>
+              <i class="faq-icon">+</i>
+            </div>
+            <p class="faq-a">Ilmoituksesi julkaistaan välittömästi maksun jälkeen — yleensä alle 5 minuutissa.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span class="faq-q-text">Voiko ilmoituksen muokata julkaisemisen jälkeen?</span>
+              <i class="faq-icon">+</i>
+            </div>
+            <p class="faq-a">Kyllä. Voit muokata ilmoitustasi rajoittamattomasti koko 30 päivän voimassaoloajan.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span class="faq-q-text">Miten hakijat ottavat yhteyttä?</span>
+              <i class="faq-icon">+</i>
+            </div>
+            <p class="faq-a">Hakijat lähettävät hakemukset suoraan sinulle sähköpostilla tai sivuston viestijärjestelmän kautta.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span class="faq-q-text">Mitä eroa on Perus- ja Teho-paketilla?</span>
+              <i class="faq-icon">+</i>
+            </div>
+            <p class="faq-a">Teho nostaa ilmoituksesi hakutulosten kärkeen ja korostaa sen visuaalisesti — tämä tuo keskimäärin 3× enemmän hakemuksia.</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span class="faq-q-text">Onko pitkäaikaisille asiakkaille alennuksia?</span>
+              <i class="faq-icon">+</i>
+            </div>
+            <p class="faq-a">Kyllä — Yritys-paketti sisältää 5 ilmoitusta ja räätälöityjä yrityskumppanuuksia. Ota meihin yhteyttä!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="cta">
+      <div style="max-width:620px;margin:0 auto;">
+        <h2 class="cta-title">Valmis löytämään<br>seuraavan tekijäsi?</h2>
+        <p class="cta-sub">Julkaise ensimmäinen ilmoituksesi tänään. Jo 49 €:lla tavoitat tuhansia hakijoita ympäri Suomea.</p>
+        <button class="btn-forest" style="font-size:17px;padding:19px 48px;" onclick="showView('post')">Julkaise ilmoitus nyt →</button>
+        <p class="cta-note">Ei sitoutumista · Näkyy heti · Maksa turvallisesti</p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-brand">
+              <div class="footer-brand-icon">🎯</div>
+              <span class="footer-brand-name">Ura<span>palvelu</span></span>
+            </div>
+            <p class="footer-desc">Suomen kattavin työpaikkasivusto — kaikki alat, koko Suomi, yhdessä paikassa.</p>
+          </div>
+          <div>
+            <p class="footer-col-title">TYÖNANTAJALLE</p>
+            <a class="footer-link" onclick="showView('post')">Julkaise ilmoitus</a>
+            <a class="footer-link" onclick="scrollTo('pricing-section')">Hinnoittelu</a>
+            <a class="footer-link">Yritysprofiili</a>
+            <a class="footer-link">Tilastot</a>
+          </div>
+          <div>
+            <p class="footer-col-title">TYÖNHAKIJALLE</p>
+            <a class="footer-link" onclick="showView('jobs')">Selaa töitä</a>
+            <a class="footer-link">IT-alan paikat</a>
+            <a class="footer-link">Rakennus</a>
+            <a class="footer-link">Terveydenhuolto</a>
+          </div>
+          <div>
+            <p class="footer-col-title">TIETOA</p>
+            <a class="footer-link">Meistä</a>
+            <a class="footer-link">Yhteystiedot</a>
+            <a class="footer-link">Tietosuoja</a>
+            <a class="footer-link">Käyttöehdot</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy">© 2026 Urapalvelu — Kaikki oikeudet pidätetään</span>
+          <span class="footer-copy">Tietosuoja · Käyttöehdot · Evästeet</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /view-home -->
+
+  <!-- ═══════════════════════════════════ POST JOB VIEW -->
+  <div id="view-post" class="view">
+    <div class="form-section">
+      <button class="form-back" onclick="showView('home')">← Takaisin etusivulle</button>
+      <div class="form-header">
+        <h1 class="form-title">Julkaise ilmoitus</h1>
+        <p class="form-subtitle">Tavoita tuhansia työnhakijoita ympäri Suomea</p>
+      </div>
+
+      <!-- Package picker -->
+      <div class="form-step-title">1. Valitse paketti</div>
+      <div class="plan-picker" id="plan-picker">
+        <div class="plan-pick-card" style="border:2px solid #dce8e0;" onclick="selectPlan(0)">
+          <div class="plan-pick-header">
+            <span class="plan-pick-name">Perus</span>
+          </div>
+          <div class="plan-pick-price">49 €</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>1 ilmoitus</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>Perushaku-näkyvyys</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>Hakijasähköpostit</div>
+        </div>
+        <div class="plan-pick-card selected" style="border:2px solid var(--gold);" onclick="selectPlan(1)">
+          <div class="plan-pick-header">
+            <span class="plan-pick-name">Teho</span>
+            <span class="plan-pick-badge">SUOSITUIN</span>
+          </div>
+          <div class="plan-pick-price">99 €</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>🔝 Nostettu näkyvyys</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>Korostettu listaus</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>Hakijatilastot</div>
+        </div>
+        <div class="plan-pick-card" style="border:2px solid #dce8e0;" onclick="selectPlan(2)">
+          <div class="plan-pick-header">
+            <span class="plan-pick-name">Yritys</span>
+          </div>
+          <div class="plan-pick-price">249 €</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>5 ilmoitusta</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>🔝 Huippunäkyvyys</div>
+          <div class="plan-pick-feature"><span class="plan-pick-check">✓</span>Yritysprofiilisivu</div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-card">
+        <div class="form-step-title">2. Ilmoituksen tiedot</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Tehtävänimike *</label>
+            <input class="form-input" type="text" placeholder="esim. Senior Putkiasentaja" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Yrityksen nimi *</label>
+            <input class="form-input" type="text" placeholder="esim. Rakennusliike Mäkinen Oy" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sijainti *</label>
+            <input class="form-input" type="text" placeholder="esim. Tampere" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Palkka (vapaaehtoinen)</label>
+            <input class="form-input" type="text" placeholder="esim. 3 800–4 600 €/kk" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Toimiala *</label>
+            <select class="form-select">
+              <option>IT & Teknologia</option>
+              <option>Rakennus & Kiinteistö</option>
+              <option>LVI & Putkiasennus</option>
+              <option>Sähköala</option>
+              <option>Terveys & Hoiva</option>
+              <option>Opetus & Koulutus</option>
+              <option>Kuljetus & Logistiikka</option>
+              <option>Kauppa & Myynti</option>
+              <option>Ravintola & Palvelu</option>
+              <option>Muu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Työsuhteen tyyppi *</label>
+            <select class="form-select">
+              <option>Kokoaikainen</option>
+              <option>Osa-aikainen</option>
+              <option>Määräaikainen</option>
+              <option>Freelance / Keikkatyö</option>
+              <option>Harjoittelu</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label class="form-label">Työn kuvaus *</label>
+          <textarea class="form-textarea" rows="6" placeholder="Kerro tehtävästä, vaatimuksista ja mitä tarjoatte hakijalle. Hyvä kuvaus tuo enemmän ja laadukkaampia hakemuksia."></textarea>
+        </div>
+        <div style="margin-bottom:32px;">
+          <label class="form-label">Yrityksen sähköposti *</label>
+          <input class="form-input" type="email" placeholder="rekrytointi@yrityksenne.fi" style="max-width:360px;" />
+        </div>
+        <div class="form-summary">
+          <div>
+            <div class="form-summary-title" id="summary-plan">Valittu paketti: Teho</div>
+            <div class="form-summary-sub">30 päivän näkyvyys · Julkaistaan heti maksun jälkeen</div>
+          </div>
+          <div class="form-summary-price" id="summary-price">99 €</div>
+        </div>
+        <button class="btn-gold" style="font-size:16px;padding:18px;width:100%;" id="submit-btn">
+          Jatka maksamaan → 99 €
+        </button>
+        <p class="form-secure">🔒 Turvallinen maksu · Visa, Mastercard, verkkopankki · Ilmoitus näkyy heti</p>
+      </div>
+    </div>
+  </div><!-- /view-post -->
+
+  <!-- ════════════════════════════════════ JOBS VIEW -->
+  <div id="view-jobs" class="view">
+    <div class="jobs-section">
+      <button class="form-back" onclick="showView('home')">← Etusivu</button>
+      <div class="jobs-header">
+        <div>
+          <h1 class="jobs-title">Avoimet työpaikat</h1>
+          <p class="jobs-count" id="jobs-count">10 ilmoitusta</p>
+        </div>
+        <button class="btn-gold" onclick="showView('post')">+ Julkaise ilmoitus</button>
+      </div>
+
+      <!-- Category pills -->
+      <div class="cat-pills" id="cat-pills">
+        <button class="cat-pill active" data-cat="kaikki" onclick="filterJobs('kaikki')">🔍 Kaikki alat <span class="cat-pill-count">1 284</span></button>
+        <button class="cat-pill" data-cat="it" onclick="filterJobs('it')">💻 IT & Tech <span class="cat-pill-count">342</span></button>
+        <button class="cat-pill" data-cat="rakennus" onclick="filterJobs('rakennus')">🏗️ Rakennus <span class="cat-pill-count">218</span></button>
+        <button class="cat-pill" data-cat="lvi" onclick="filterJobs('lvi')">🔧 LVI & Putki <span class="cat-pill-count">97</span></button>
+        <button class="cat-pill" data-cat="sahko" onclick="filterJobs('sahko')">⚡ Sähköala <span class="cat-pill-count">134</span></button>
+        <button class="cat-pill" data-cat="terveys" onclick="filterJobs('terveys')">🏥 Terveys <span class="cat-pill-count">203</span></button>
+        <button class="cat-pill" data-cat="opetus" onclick="filterJobs('opetus')">📚 Opetus <span class="cat-pill-count">88</span></button>
+        <button class="cat-pill" data-cat="kuljetus" onclick="filterJobs('kuljetus')">🚛 Kuljetus <span class="cat-pill-count">156</span></button>
+      </div>
+
+      <!-- Search -->
+      <div class="search-bar">
+        <div class="search-field">
+          <span>🔍</span>
+          <input class="search-input-bare" id="search-q" type="text" placeholder="Hae nimikettä tai yritystä..." oninput="filterJobs()" />
+        </div>
+        <div class="search-field search-field-loc">
+          <span>📍</span>
+          <input class="search-input-bare" id="search-loc" type="text" placeholder="Kaupunki..." oninput="filterJobs()" />
+        </div>
+        <button class="btn-forest" style="padding:0 28px;border-radius:7px;font-size:14px;" onclick="filterJobs()">Hae</button>
+      </div>
+
+      <!-- Jobs list -->
+      <div class="jobs-list" id="jobs-list"></div>
+    </div>
+  </div><!-- /view-jobs -->
+
+  <script>
+    // ── DATA ──────────────────────────────────────────
+    const ALL_JOBS = [
+      { title: "Senior Full Stack -kehittäjä", company: "Solita Oy", location: "Helsinki", logo: "💻", cat: "it", hot: true, salary: "5 500–7 500 €/kk", type: "Kokoaikainen", posted: "Tänään" },
+      { title: "React Native -kehittäjä", company: "Futurice", location: "Helsinki / Etätyö", logo: "📱", cat: "it", hot: false, salary: "5 000–7 000 €/kk", type: "Kokoaikainen", posted: "3 pv sitten" },
+      { title: "DevOps-insinööri", company: "Vincit Oy", location: "Etätyö", logo: "⚙️", cat: "it", hot: true, salary: "5 200–6 800 €/kk", type: "Kokoaikainen", posted: "1 vk sitten" },
+      { title: "Rakennusmies / Kirvesmies", company: "NCC Suomi Oy", location: "Tampere", logo: "🏗️", cat: "rakennus", hot: false, salary: "3 200–3 800 €/kk", type: "Kokoaikainen", posted: "Eilen" },
+      { title: "Maalarimestari", company: "Tikkurila Palvelut", location: "Vantaa", logo: "🎨", cat: "rakennus", hot: false, salary: "3 100–3 700 €/kk", type: "Kokoaikainen", posted: "5 pv sitten" },
+      { title: "Putkiasentaja", company: "Talotekniikka Pro", location: "Espoo", logo: "🔧", cat: "lvi", hot: false, salary: "3 400–4 200 €/kk", type: "Kokoaikainen", posted: "2 pv sitten" },
+      { title: "LVI-suunnittelija", company: "Granlund Oy", location: "Helsinki", logo: "📐", cat: "lvi", hot: false, salary: "4 000–5 500 €/kk", type: "Kokoaikainen", posted: "1 vk sitten" },
+      { title: "Sähköasentaja", company: "Caverion Suomi", location: "Turku", logo: "⚡", cat: "sahko", hot: true, salary: "3 300–4 000 €/kk", type: "Kokoaikainen", posted: "3 pv sitten" },
+      { title: "Terveydenhoitaja", company: "HUS", location: "Helsinki", logo: "🏥", cat: "terveys", hot: false, salary: "2 900–3 500 €/kk", type: "Osa-aikainen", posted: "4 pv sitten" },
+      { title: "Opettaja / Luokanopettaja", company: "Helsingin kaupunki", location: "Helsinki", logo: "📚", cat: "opetus", hot: false, salary: "3 100–3 900 €/kk", type: "Kokoaikainen", posted: "1 vk sitten" },
+    ];
+
+    const PLANS = [
+      { name: "Perus", price: 49 },
+      { name: "Teho", price: 99 },
+      { name: "Yritys", price: 249 },
+    ];
+
+    let currentPlan = 1;
+    let currentCat = "kaikki";
+
+    // ── VIEW ROUTING ─────────────────────────────────
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById('view-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (name === 'jobs') renderJobs();
+    }
+
+    function scrollTo(id) {
+      showView('home');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    // ── PLAN SELECTION ────────────────────────────────
+    function selectPlan(idx) {
+      currentPlan = idx;
+      const cards = document.querySelectorAll('.plan-pick-card');
+      cards.forEach((c, i) => {
+        if (i === idx) {
+          c.classList.add('selected');
+          c.style.borderColor = 'var(--gold)';
+        } else {
+          c.classList.remove('selected');
+          c.style.borderColor = '#dce8e0';
+        }
+      });
+      const plan = PLANS[idx];
+      document.getElementById('summary-plan').textContent = 'Valittu paketti: ' + plan.name;
+      document.getElementById('summary-price').textContent = plan.price + ' €';
+      document.getElementById('submit-btn').textContent = 'Jatka maksamaan → ' + plan.price + ' €';
+    }
+
+    function selectPlanAndPost(idx) {
+      showView('post');
+      setTimeout(() => selectPlan(idx), 50);
+    }
+
+    // ── JOB FILTERING ─────────────────────────────────
+    function filterJobs(cat) {
+      if (cat !== undefined) {
+        currentCat = cat;
+        document.querySelectorAll('.cat-pill').forEach(p => {
+          p.classList.toggle('active', p.dataset.cat === cat);
+        });
+      }
+      renderJobs();
+    }
+
+    function renderJobs() {
+      const q = (document.getElementById('search-q')?.value || '').toLowerCase();
+      const loc = (document.getElementById('search-loc')?.value || '').toLowerCase();
+
+      const filtered = ALL_JOBS.filter(job => {
+        const matchCat = currentCat === 'kaikki' || job.cat === currentCat;
+        const matchQ = !q || job.title.toLowerCase().includes(q) || job.company.toLowerCase().includes(q);
+        const matchLoc = !loc || job.location.toLowerCase().includes(loc);
+        return matchCat && matchQ && matchLoc;
+      });
+
+      document.getElementById('jobs-count').textContent = filtered.length + ' ilmoitusta';
+
+      const list = document.getElementById('jobs-list');
+      if (filtered.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:60px;color:var(--muted);"><div style="font-size:48px;margin-bottom:16px;">🔎</div><p>Ei hakutuloksia. Kokeile eri hakusanoja.</p></div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(job => `
+        <div class="job-row">
+          <div class="job-logo">${job.logo}</div>
+          <div style="flex:1;">
+            <div class="job-title">${job.title}</div>
+            <div class="job-meta">${job.company} · ${job.location}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <span style="background:#EAF0EC;color:#2a5a3a;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;">${job.type}</span>
+            <span style="font-size:13px;font-weight:600;color:#2D7A4F;">${job.salary}</span>
+            ${job.hot ? '<span class="badge-hot">🔥 Suosittu</span>' : ''}
+          </div>
+          <button class="btn-ghost" style="padding:9px 20px;font-size:13px;margin-left:8px;white-space:nowrap;">Lue lisää</button>
+        </div>
+      `).join('');
+    }
+
+    // ── FAQ ACCORDION ─────────────────────────────────
+    document.addEventListener('click', function(e) {
+      const item = e.target.closest('.faq-item');
+      if (item) {
+        item.classList.toggle('open');
+      }
+    });
+
+    // ── ANIMATED COUNTERS ─────────────────────────────
+    function animateCounters() {
+      const nums = document.querySelectorAll('.stat-num[data-target]');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const duration = 1800;
+            const step = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+              current += step;
+              if (current >= target) {
+                current = target;
+                clearInterval(timer);
+              }
+              el.textContent = Math.floor(current).toLocaleString('fi-FI') + suffix;
+            }, 16);
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.3 });
+      nums.forEach(n => observer.observe(n));
+    }
+
+    // ── INIT ──────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      animateCounters();
+      renderJobs();
+    });
+  </script>
+</body>
+</html>
